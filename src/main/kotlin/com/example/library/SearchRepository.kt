@@ -5,4 +5,10 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface BookRepository : CrudRepository<Book,Int>
+interface SearchRepository : CrudRepository<Book, Int>{
+    @Query
+    fun findByAuthor(author:String):Iterable<Book>?
+
+    @Query
+    fun findByBookName(bookName:String):Iterable<Book>?
+}

@@ -4,6 +4,7 @@ package com.example.library.service
 import com.example.library.BookRepository
 import com.example.library.Book
 import com.example.library.BookService
+import com.example.library.SearchRepository
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import io.mockk.verify
@@ -17,6 +18,8 @@ import java.util.*
 class BookServiceTest(@Autowired private val bookService: BookService){
     @MockkBean
     private  lateinit var mockBookRepository: BookRepository
+    @MockkBean
+    private  lateinit var  mockSearchRepository: SearchRepository
 
     val test1 = Book(id = 1, bookName = "aa", author = "bb", attribute = "cc")
     val test2 = Book(id = 2, bookName = "aa", author = "bb", attribute = "cc")
@@ -85,5 +88,27 @@ class BookServiceTest(@Autowired private val bookService: BookService){
 
         Assertions.assertEquals(expectedTest1,bookService.deleteById(1))
         verify { mockBookRepository.deleteById(1) }
+    }
+
+    @Test
+    fun testFindByAuthor(){
+        every {mockSearchRepository.findByAuthor("bb")} returns testItems
+        val expectedTest1 = Book(id = 1, bookName = "aa", author = "bb", attribute = "cc")
+        val expectedTest2 = Book(id = 2, bookName = "aa", author = "bb", attribute = "cc")
+        val expectedItems = listOf(expectedTest1,expectedTest2)
+
+        Assertions.assertEquals(expectedItems,bookService.findByAuthor("bb"))
+        verify { mockSearchRepository.findByAuthor("bb")}
+    }
+
+    @Test
+    fun testFindByBookName(){
+        every {mockSearchRepository.findByBookName("cc")} returns testItems
+        val expectedTest1 = Book(id = 1, bookName = "aa", author = "bb", attribute = "cc")
+        val expectedTest2 = Book(id = 2, bookName = "aa", author = "bb", attribute = "cc")
+        val expectedItems = listOf(expectedTest1,expectedTest2)
+
+        Assertions.assertEquals(expectedItems,bookService.findByBookName("cc"))
+        verify { mockSearchRepository.findByBookName("cc")}
     }
 }
