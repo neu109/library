@@ -26,7 +26,10 @@ dependencies {
 	runtimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
+		exclude(group = "org.mockito", module = "mockito-junit-jupiter")
 	}
+	testImplementation("io.projectreactor:reactor-test")
+	testImplementation("com.ninja-squad:springmockk:1.1.3")
 }
 
 tasks.withType<Test> {
